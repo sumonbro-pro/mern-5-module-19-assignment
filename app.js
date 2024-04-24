@@ -15,10 +15,10 @@ import path from "path";
 // SECURITY PARAMETER STARTS HERE
 app.use(bodyParser.json());
 // app.use(helmet());
-// app.use(cors());
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(hpp());
-// app.use(mongoSanitize());
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(hpp());
+app.use(mongoSanitize());
 
 const limiter = rateLimit({
     windowMs: 20 * 60 * 1000,
@@ -47,7 +47,6 @@ app.use('/api/v1', router);
 app.use(express.static('client/dist'));
 app.get('*', (req, res) => {
     res.sendFile(path.resolve('client', 'dist', 'index.html'));
-    // res.sendFile(path.resolve(__dirname,'client','dist','index.html'));
 })
 //FRONT-END ENDS HERE
 

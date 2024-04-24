@@ -1,31 +1,30 @@
 import React, {useEffect, useState} from 'react';
 import Sidebar from "../layouts/Sidebar.jsx";
 import MasterLayout from "../layouts/MasterLayout.jsx";
+import {useParams} from "react-router-dom";
+import axios from "axios";
 
-const [food, setFood] = useState({});
-
-
-useEffect(() => {
-    (async () => {
-        const fetchedData = await axios.get('/')
-    })()
-}, []);
-
-
-const handleSubmit = (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const data = new FormData(form);
-    const title = data.get('title');
-    const code = data.get('code');
-    const img = data.get('img');
-    const category = data.get('category');
-    const qty = data.get('qty');
-    const price = data.get('price');
-    console.log(title, code, img, category, qty, price);
-}
 
 const UpdatePage = () => {
+    const {id} = useParams();
+    let [form, setForm] = useState({});
+
+    const handleChange = e => {
+        setForm({...form, [e.target.name]: e.target.value});
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log(form);
+        try {
+            const response = await axios.put(`/api/v1/update-food/${id}`, form);
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error updating food:', error);
+        }
+    };
+
+
     return (
         <MasterLayout>
             <div className='createPage flex'>
@@ -38,32 +37,45 @@ const UpdatePage = () => {
                         <div className='flex gap-2 my-5'>
                             <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor="title">
                                 Food name
-                                <input required={true} className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="text" name="title" id="title"/>
+                                <input onChange={handleChange} required={true}
+                                       className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                                       type="text" name="name" id="name"/>
                             </label>
                             <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor="code">
                                 Food code
-                                <input required={true} className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="number" name="code" id="code"/>
+                                <input onChange={handleChange} required={true}
+                                       className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                                       type="number" name="code" id="code"/>
                             </label>
                             <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor="img">
                                 Food image
-                                <input required={true} className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="text" name="img" id="img"/>
+                                <input onChange={handleChange} required={true}
+                                       className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                                       type="text" name="img" id="img"/>
                             </label>
                         </div>
                         <div className='flex gap-2'>
                             <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor="category">
                                 Food category
-                                <input required={true} className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="text" name="category" id="category"/>
+                                <input onChange={handleChange} required={true}
+                                       className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                                       type="text" name="category" id="category"/>
                             </label>
                             <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor="qty">
                                 QTY
-                                <input required={true} className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="number" name="qty" id="qty"/>
+                                <input onChange={handleChange} required={true}
+                                       className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                                       type="number" name="qty" id="qty"/>
                             </label>
                             <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor="price">
                                 Price
-                                <input required={true} className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="number" name="price" id="price"/>
+                                <input onChange={handleChange} required={true}
+                                       className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                                       type="number" name="price" id="price"/>
                             </label>
                         </div>
-                        <input type="submit" className='cursor-pointer bg-purple-700 py-2 px-3 rounded text-white' value="Update"/>
+                        <input onClick={handleSubmit} type="submit"
+                               className='cursor-pointer bg-purple-700 py-2 px-3 rounded text-white' value="Update"/>
                     </form>
                 </div>
             </div>

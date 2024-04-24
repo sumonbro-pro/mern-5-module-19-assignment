@@ -24,9 +24,10 @@ const readFood =async (req, res) => {
 
 const updateFood =async (req, res) => {
     try {
-        const {_id, name, code, img, category, qty, price} = req.body;
+        const {id} = req.params;
+        const {name, code, img, category, qty, price} = req.body;
         const updateTerm = {name, code, img, category, qty, price};
-        const result = await FoodModel.updateOne({_id:_id}, updateTerm);
+        const result = await FoodModel.updateOne({_id:id}, updateTerm);
         return res.json(result);
     } catch (err) {
         res.json({error: err.message});
